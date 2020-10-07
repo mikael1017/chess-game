@@ -18,31 +18,33 @@ class Board:
         self.width = self.board_size[0]
         self.border = 50
         self.cell = 80
+        self.col = 8
+        self.row = 8
         self.positions = [[0 for x in range(8)] for y in range(8)]
         
-        self.positions[7][0] = Rook(7, 0, "black")
-        self.positions[7][1] = Knight(7, 1, "black")
-        self.positions[7][2] = Bishop(7, 2, "black")
-        self.positions[7][3] = Queen(7, 3, "black")
-        self.positions[7][4] = King(7, 4, "black")
-        self.positions[7][5] = Bishop(7, 5, "black")
-        self.positions[7][6] = Knight(7, 6, "black")
+        self.positions[0][7] = Rook(0, 7, "black")
+        self.positions[1][7] = Knight(1, 7 , "black")
+        self.positions[2][7] = Bishop(2, 7, "black")
+        self.positions[3][7] = Queen(3, 7, "black")
+        self.positions[4][7] = King(4, 7, "black")
+        self.positions[5][7] = Bishop(5, 7, "black")
+        self.positions[6][7] = Knight(6, 7, "black")
         self.positions[7][7] = Rook(7, 7, "black")
         
         for i in range(8):
-            self.positions[6][i] = Pawn(6, i, "black")
+            self.positions[i][6] = Pawn(i, 6, "black")
         
         self.positions[0][0] = Rook(0, 0, "white")
-        self.positions[0][1] = Knight(0, 1, "white")
-        self.positions[0][2] = Bishop(0, 2, "white")
-        self.positions[0][3] = Queen(0, 3, "white")
-        self.positions[0][4] = King(0, 4, "white")
-        self.positions[0][5] = Bishop(0, 5, "white")
-        self.positions[0][6] = Knight(0, 6, "white")
-        self.positions[0][0] = Rook(0, 0, "white")
+        self.positions[1][0] = Knight(1, 0, "white")
+        self.positions[2][0] = Bishop(2, 0, "white")
+        self.positions[3][0] = Queen(3, 0, "white")
+        self.positions[4][0] = King(4, 0, "white")
+        self.positions[5][0] = Bishop(5, 0, "white")
+        self.positions[6][0] = Knight(6, 0, "white")
+        self.positions[7][0] = Rook(7, 0, "white")
         
         for i in range(8):
-            self.positions[1][i] = Pawn(1, i, "white")
+            self.positions[i][1] = Pawn(i, 1, "white")
 
 
 # image size

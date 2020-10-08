@@ -88,35 +88,13 @@ class Bishop(Piece):
         super().__init__(x, y, black, self.image)
         
     def get_move(self, positions):
-        pass
-class Knight(Piece):
-    def __init__(self, x, y, black):
-        if black:
-            self.image = b_knight
-        else:
-            self.image = w_knight
-        super().__init__(x, y, black, self.image)
-        
-    def get_move(self, positions):
-        pass
-
-class Rook(Piece):
-    def __init__(self, x, y, black):
-        if black:
-            self.image = b_rook
-        else:
-            self.image = w_rook
-        super().__init__(x, y, black, self.image)
-        
-    def get_move(self, positions):
         hit = False
-        curr_y = self.y
         increment = 0
         moves = []
         while not hit:
             increment += 1
-            valid = valid_position(positions, self.x,  curr_y + increment)
-            location = (self.x, curr_y + increment)
+            valid = valid_position(positions, self.x + increment,  self.y + increment)
+            location = (self.x + increment, self.y + increment)
             if valid == "empty":
                 moves.append(location)
             elif valid == "white":
@@ -132,9 +110,126 @@ class Rook(Piece):
         increment = 0
         hit = False
         while not hit:
-            increment -= 1
-            valid = valid_position(positions, self.x, curr_y + increment)
-            location = (self.x, curr_y + increment)
+            increment += 1
+            valid = valid_position(positions, self.x - increment, self.y - increment)
+            location = (self.x - increment, self.y - increment)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+
+        increment = 0
+        hit = False
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x + increment, self.y - increment)
+            location = (self.x + increment, self.y - increment)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+
+        increment = 0
+        hit = False
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x - increment, self.y + increment)
+            location = (self.x - increment, self.y + increment)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+        return moves
+
+
+class Knight(Piece):
+    def __init__(self, x, y, black):
+        if black:
+            self.image = b_knight
+        else:
+            self.image = w_knight
+        super().__init__(x, y, black, self.image)
+        
+    def get_move(self, positions):
+        possible_moves = [(-2, -1), (-1, -2), (1, -2), (2, -1), (2, 1), (1, 2), (-1, 2), (-2, 1)]
+        moves = []
+        for x, y in possible_moves:
+            valid = valid_position(positions, self.x + x, self.y + y)
+            location = (self.x + x, self.y + y)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+        return moves
+        
+
+class Rook(Piece):
+    def __init__(self, x, y, black):
+        if black:
+            self.image = b_rook
+        else:
+            self.image = w_rook
+        super().__init__(x, y, black, self.image)
+        
+    def get_move(self, positions):
+        hit = False
+        increment = 0
+        moves = []
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x,  self.y + increment)
+            location = (self.x, self.y + increment)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+
+        increment = 0
+        hit = False
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x, self.y - increment)
+            location = (self.x, self.y - increment)
             if valid == "empty":
                 moves.append(location)
             elif valid == "white":
@@ -157,8 +252,15 @@ class Queen(Piece):
             self.image = w_queen
         super().__init__(x, y, black, self.image)
         
+    #   possible move of queen is actually bishop + rook
     def get_move(self, positions):
-        pass
+        inherit1 = Rook(self.x, self.y, self.black)
+        inherit2 = Bishop(self.x, self.y, self.black)
+        list1 = inherit1.get_move(positions)
+        list2 = inherit2.get_move(positions)
+        list1.extend(list2)
+        return list1
+
 
 class King(Piece):
     def __init__(self, x, y, black):
@@ -169,4 +271,23 @@ class King(Piece):
         super().__init__(x, y, black, self.image)
         
     def get_move(self, positions):
-        pass
+        possible_increment = (-1, 0, 1)
+        moves = []
+        for x in possible_increment:
+            for y in possible_increment:
+                if x != 0 or y != 0:
+                    valid = valid_position(positions, self.x + x, self.y + x)
+                    location = (self.x + x, self.y + y)
+                    if valid == "empty":
+                        moves.append(location)
+                    elif valid == "white":
+                        if self.black:
+                            moves.append(location)
+                        hit = True
+                    elif valid == "black":
+                        if not self.black:
+                            moves.append(location)
+                        hit = True
+                    else:
+                        hit = True
+        return moves

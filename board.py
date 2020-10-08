@@ -31,8 +31,8 @@ class Board:
         self.positions[6][7] = Knight(6, 7, True)
         self.positions[7][7] = Rook(7, 7, True)
         
-        # for i in range(8):
-        #     self.positions[i][6] = Pawn(i, 6, True)
+        for i in range(8):
+            self.positions[i][6] = Pawn(i, 6, True)
         
         self.positions[0][0] = Rook(0, 0, False)
         self.positions[1][0] = Knight(1, 0, False)

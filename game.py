@@ -62,6 +62,7 @@ while running:
                         piece_rect.left = pos_to_pixel(i)
                         piece_rect.top = pos_to_pixel(j)
                         if piece_rect.collidepoint(pos):
+                            print(piece.get_move(board.positions))
                             print(piece.__class__.__name__)
 
     # 3. Character location

@@ -33,6 +33,9 @@ space = 86
 border = 110
 black_turn = True
 mark_image = pygame.image.load(os.path.join(image_path, "mark.png"))
+clicked_image_x = -1
+clicked_image_y = -1
+piece_to_move = 0
 
 def pos_to_pixel(pos):
     return (space * pos) + border 
@@ -91,8 +94,27 @@ while running:
                         if piece_rect.collidepoint(pos):
                             if (piece.black != black_turn):
                                 display_msg("Other player's turn")
-                            else:
-                                piece_to_move = piece
+                                break
+                            clicked_image_x = i
+                            clicked_image_y = j
+                            piece_to_move = piece
+                    #   when empty position is clicked it moves to the new location 
+                    elif (piece == 0):
+                        piece_rect.left = pos_to_pixel(i)
+                        piece_rect.top = pos_to_pixel(j)
+                        piece_rect = pygame.Rect(piece_rect.left, piece_rect.top, 75, 75)
+                        if piece_rect.collidepoint(pos):
+                            print(i)
+                            print(j)
+                            print(clicked_image_x)
+                            print(clicked_image_y)
+                            if (i, j) in board.positions[clicked_image_x][clicked_image_y].get_move(board.positions):
+                                board.positions[i][j] = board.positions[clicked_image_x][clicked_image_y]
+                                board.positions[clicked_image_x][clicked_image_y] = 0
+                                board.positions[i][j].x = i
+                                board.positions[i][j].y = j
+                                draw_board(board)
+                                black_turn = not black_turn
                                 
                             
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # when user clicks a piece by right mouse button

@@ -77,8 +77,6 @@ class Pawn(Piece):
                 moves.append((self.x + 1, self.y + 1))
         return moves
 
-
-
 class Bishop(Piece):
     def __init__(self, x, y, black):
         if black:

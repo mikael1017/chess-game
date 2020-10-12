@@ -15,7 +15,7 @@ pygame.init() # reset
 screen_width = 900 # x-axis
 screen_height = 900 # y-axis
 screen = pygame.display.set_mode((screen_width, screen_height))
-current_path = os.path.dirname(__file__)
+current_path = os.path.dirname (__file__)
 image_path = os.path.join(current_path, "images")
 game_font = pygame.font.Font(None, 40)
 #   Title 
@@ -37,6 +37,13 @@ mark_image = pygame.image.load(os.path.join(image_path, "mark.png"))
 def pos_to_pixel(pos):
     return (space * pos) + border 
 
+def display_msg(message):
+    msg = game_font.render(message, True, (255, 0, 0))
+    msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
+    screen.blit(msg, msg_rect)
+    pygame.display.update()
+    pygame.time.delay(1500)
+
 def draw_board(board):
     for i in range(board.col):
         for j in range(board.row):
@@ -49,11 +56,7 @@ def draw_board(board):
 #   otherwise, it display possible move of selected piece for 1.5 seconds
 def draw_moves(moves):
     if len(moves) == 0:
-        msg = game_font.render("No available move", True, (255, 0, 0))
-        msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
-        screen.blit(msg, msg_rect)
-        pygame.display.update()
-        pygame.time.delay(1500)
+        display_msg("No possible move")
         return
     move_location = []
     for move in moves:
@@ -76,7 +79,6 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # when user clicks a piece by left mouse button
             pos = pygame.mouse.get_pos()
-
             #   when piece is clicked by mouse
             #   if chess piece is clicked on other player's turn, it will print out other's turn
             for i in range(board.col):
@@ -88,7 +90,10 @@ while running:
                         piece_rect.top = pos_to_pixel(j)
                         if piece_rect.collidepoint(pos):
                             if (piece.black != black_turn):
-                                print("other player's turn")
+                                display_msg("Other player's turn")
+                            else:
+                                piece_to_move = piece
+                                
                             
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # when user clicks a piece by right mouse button
             pos = pygame.mouse.get_pos()
@@ -100,6 +105,9 @@ while running:
                         piece_rect.left = pos_to_pixel(i)
                         piece_rect.top = pos_to_pixel(j)
                         if piece_rect.collidepoint(pos):
+                            if (piece.black != black_turn):
+                                display_msg("Other player's turn")
+                                break
                             draw_moves(piece.get_move(board.positions))
 
     # 3. Character location

@@ -115,6 +115,11 @@ while running:
                                 board.positions[i][j].y = j
                                 draw_board(board)
                                 black_turn = not black_turn
+                    #   If moving chess piece is opposite color of the located chess piece
+                    elif (piece_to_move.black != piece.black):
+                        piece_rect = piece.image.get_rect()
+                        piece_rect.left = pos_to_pixel(i)
+                        piece_rect.top = pos_to_pixel(j)
                                 
                             
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # when user clicks a piece by right mouse button
@@ -135,6 +140,8 @@ while running:
     # 3. Character location
     
     # 4. Collision handling
+
+
     
     # 5. Display it in window
     screen.blit(board.board_image, (50, 50)) 

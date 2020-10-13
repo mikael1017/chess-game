@@ -71,7 +71,7 @@ class Pawn(Piece):
                 if self.y == 1:
                     if valid_position(positions, self.x, self.y + 2) == "empty":
                         moves.append((self.x, self.y + 2))
-            if valid_position(positions, self.x + 1, self.y + 1) == "black":
+            if valid_position(positions, self.x - 1, self.y + 1) == "black":
                 moves.append((self.x - 1, self.y + 1))
             if valid_position(positions, self.x + 1, self.y + 1) == "black":    
                 moves.append((self.x + 1, self.y + 1))

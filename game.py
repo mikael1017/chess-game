@@ -7,6 +7,7 @@ from board import Pawn
 from board import Queen
 from board import Knight
 from board import Board
+from piece import Piece
 #############################################
 
 #   Must have
@@ -66,7 +67,7 @@ def draw_moves(moves):
         move_location.append(pos_to_pixel(move[0]))
         move_location.append(pos_to_pixel(move[1]))
         screen.blit(mark_image, (move_location[0], move_location[1]))
-        print(move_location)
+        # print(move_location)
         move_location = []
     pygame.display.update()
     pygame.time.delay(1500)
@@ -99,29 +100,31 @@ while running:
                             clicked_image_y = j
                             piece_to_move = piece
                     #   when empty position is clicked it moves to the new location 
-                    elif (piece == 0):
+                    elif (isinstance(piece_to_move, Piece) and piece == 0):
                         piece_rect.left = pos_to_pixel(i)
                         piece_rect.top = pos_to_pixel(j)
                         piece_rect = pygame.Rect(piece_rect.left, piece_rect.top, 75, 75)
                         if piece_rect.collidepoint(pos):
-                            print(i)
-                            print(j)
-                            print(clicked_image_x)
-                            print(clicked_image_y)
+                            # print(i)
+                            # print(j)
+                            # print(clicked_image_x)
+                            # print(clicked_image_y)
                             if (i, j) in board.positions[clicked_image_x][clicked_image_y].get_move(board.positions):
                                 board.positions[i][j] = board.positions[clicked_image_x][clicked_image_y]
                                 board.positions[clicked_image_x][clicked_image_y] = 0
                                 board.positions[i][j].x = i
                                 board.positions[i][j].y = j
+                                piece_to_move = 0
                                 draw_board(board)
                                 black_turn = not black_turn
                     #   If moving chess piece is opposite color of the located chess piece
-                    elif (piece_to_move.black != piece.black):
-                        piece_rect = piece.image.get_rect()
-                        piece_rect.left = pos_to_pixel(i)
-                        piece_rect.top = pos_to_pixel(j)
-                                
-                            
+                    ######################
+                    # elif (piece_to_move.black != piece.black):
+                    #     piece_rect = piece.image.get_rect()
+                    #     piece_rect.left = pos_to_pixel(i)
+                    #     piece_rect.top = pos_to_pixel(j)
+                    #     not NotImplemented
+                    ######################        
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # when user clicks a piece by right mouse button
             pos = pygame.mouse.get_pos()
             for i in range(board.col):

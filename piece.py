@@ -240,6 +240,44 @@ class Rook(Piece):
                 hit = True
             else:
                 hit = True
+
+        increment = 0
+        hit = False
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x - increment, self.y)
+            location = (self.x - increment, self.y)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
+
+        increment = 0
+        hit = False
+        while not hit:
+            increment += 1
+            valid = valid_position(positions, self.x + increment, self.y)
+            location = (self.x + increment, self.y)
+            if valid == "empty":
+                moves.append(location)
+            elif valid == "white":
+                if self.black:
+                    moves.append(location)
+                hit = True
+            elif valid == "black":
+                if not self.black:
+                    moves.append(location)
+                hit = True
+            else:
+                hit = True
         return moves
 
 class Queen(Piece):

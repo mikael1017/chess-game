@@ -57,7 +57,6 @@ def draw_board(board):
             position = board.positions[i][j]
             if (position != 0):
                 screen.blit(board.positions[i][j].image, (pos_to_pixel(i), pos_to_pixel(j)))
-
 #   if piece doesn't have any possible move, it displays "No available move" on the screen
 #   otherwise, it display possible move of selected piece for 1.5 seconds
 def draw_moves(moves):
@@ -169,6 +168,7 @@ def game_loop():
                                 if (piece.black != black_turn):
                                     display_msg("Other player's turn")
                                     break
+                                print(piece.get_move)
                                 draw_moves(piece.get_move(board.positions))
 
         # 3. Character location

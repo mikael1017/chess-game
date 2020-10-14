@@ -312,18 +312,15 @@ class King(Piece):
         for x in possible_increment:
             for y in possible_increment:
                 if x != 0 or y != 0:
-                    valid = valid_position(positions, self.x + x, self.y + x)
+                    valid = valid_position(positions, self.x + x, self.y + y)
                     location = (self.x + x, self.y + y)
+                    print(location)
                     if valid == "empty":
                         moves.append(location)
                     elif valid == "white":
                         if self.black:
                             moves.append(location)
-                        hit = True
                     elif valid == "black":
                         if not self.black:
                             moves.append(location)
-                        hit = True
-                    else:
-                        hit = True
         return moves

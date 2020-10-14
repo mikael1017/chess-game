@@ -28,8 +28,6 @@ clock = pygame.time.Clock()
 
 #############################################
 
-# 1. Background, Game image, Character, Position of image, Font
-#   Background
 board = Board()
 space = 86
 border = 110
@@ -49,7 +47,7 @@ def display_msg(message):
     msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
     screen.blit(msg, msg_rect)
     pygame.display.update()
-    pygame.time.delay(1500)
+    pygame.time.delay(3000)
 
 def draw_board(board):
     for i in range(board.col):
@@ -88,11 +86,12 @@ def game_loop():
     background = pygame.image.load(os.path.join(image_path, "background.png"))
     running = True 
     selected_piece = "None"
+    king_caught = False
 
 
     while running:
         dt = clock.tick(60) #frame per second
-        # 2. Event handling (keyboard, mouse, etc)
+        #   Event handling (keyboard, mouse, etc)
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # when user click the close button
                 running = False
@@ -109,17 +108,16 @@ def game_loop():
                             piece_rect.top = pos_to_pixel(j)
                             if piece_rect.collidepoint(pos):
                                 if (i, j) in board.positions[clicked_image_x][clicked_image_y].get_move(board.positions):
-                                    if isinstance(piece, King):
-                                        print("Game Over!")
-                                        running = False
-                                        break
-
                                     board.positions[i][j] = board.positions[clicked_image_x][clicked_image_y]
                                     board.positions[clicked_image_x][clicked_image_y] = 0
                                     board.positions[i][j].x = i
                                     board.positions[i][j].y = j
                                     piece_to_move = 0
-                                    draw_board(board)
+                                    pygame.display.update()
+                                    if isinstance(piece, King):
+                                        king_caught = True
+                                        running = False
+                                        break
                                     black_turn = not black_turn
                                 else:
                                     display_msg("Can't place a piece there")
@@ -150,10 +148,15 @@ def game_loop():
                                     board.positions[i][j].x = i
                                     board.positions[i][j].y = j
                                     piece_to_move = 0
-                                    draw_board(board)
                                     black_turn = not black_turn
                                 else:
                                     display_msg("Can't place a piece there")
+                    else:
+                        continue
+                    break
+                else:
+                    continue
+                break
                         #   If moving chess piece is opposite color of the located chess piece
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # when user clicks a piece by right mouse button
                 pos = pygame.mouse.get_pos()
@@ -171,13 +174,6 @@ def game_loop():
                                 print(piece.get_move)
                                 draw_moves(piece.get_move(board.positions))
 
-        # 3. Character location
-        
-        # 4. Collision handling
-
-
-        
-        # 5. Display it in window
         screen.blit(background, (0, 0))
         screen.blit(board.board_image, (50, 50))
         draw_board(board)
@@ -187,6 +183,8 @@ def game_loop():
         screen.blit(score, (0, 5))
         screen.blit(chosen, (450, 5))
         pygame.display.update()
+        if king_caught:
+            display_msg("Game Over! {} won!".format(turn))
 
 game_loop()
 pygame.quit()

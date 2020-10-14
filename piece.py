@@ -314,7 +314,6 @@ class King(Piece):
                 if x != 0 or y != 0:
                     valid = valid_position(positions, self.x + x, self.y + y)
                     location = (self.x + x, self.y + y)
-                    print(location)
                     if valid == "empty":
                         moves.append(location)
                     elif valid == "white":
